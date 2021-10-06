@@ -12,6 +12,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+
+import net.runelite.api.events.*;
+
+
 @Slf4j
 @PluginDescriptor(
 	name = "Example"
@@ -37,12 +41,13 @@ public class ExamplePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
-		}
+		System.out.println(chatMessage.getType());
+		String x = chatMessage.getMessage();
+		x = x.replaceAll("\\s*\\<[^\\)]*\\>\\s*", "");
+		System.out.println(x);
+
 	}
 
 	@Provides
