@@ -21,7 +21,7 @@ that you'd like the client to link with.
 
 If you are unsure on how to find your Phillips bridge IP adress visit this link : https://huetips.com/help/how-to-find-my-bridge-ip-address/ .
 
-(images/config.png)
+![Config Menu](images/config.png)
 
 ## Step 2
 
