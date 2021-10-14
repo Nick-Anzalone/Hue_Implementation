@@ -99,13 +99,6 @@ public class HuePlugin extends Plugin
 
 
 		if(chatMessage.getType() == ChatMessageType.GAMEMESSAGE){
-			if (message.contains("interesting")){
-				this.room.setState(State.builder().color(Color.of(java.awt.Color.PINK)).on());
-				this.room.setBrightness(250);
-
-
-			}
-
 
 			if(message.contains("You have a funny feeling like") || message.contains("You feel something weird sneaking into your backpack")){
 				this.room.setState(State.builder().color(Color.of(java.awt.Color.CYAN)).on());
