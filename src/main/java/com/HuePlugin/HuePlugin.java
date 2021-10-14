@@ -25,7 +25,7 @@ import net.runelite.api.events.*;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hue"
+	name = "Hue Phillips Integration"
 )
 public class HuePlugin extends Plugin
 {
