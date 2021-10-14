@@ -10,9 +10,11 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = '1.7.24'
+def runeLiteVersion = '1.7.26'
 
 dependencies {
+	implementation 'io.github.zeroone3010:yetanotherhueapi:2.3.0'
+
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 
 	compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -21,6 +23,8 @@ dependencies {
 	testImplementation 'junit:junit:4.12'
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
 	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+
+	compile 'io.github.zeroone3010:yetanotherhueapi:2.3.0'
 }
 
 group = 'com.example'
