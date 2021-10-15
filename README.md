@@ -21,20 +21,19 @@ that you'd like the client to link with.
 
 If you are unsure on how to find your Phillips bridge IP adress visit this link : https://huetips.com/help/how-to-find-my-bridge-ip-address/ .
 
-![Config Menu](images/config.png)
 
 ## Step 2
 
 Once your IP adress and Room name has been entered correctly in game type the command !connecthue .
 
-![Command](images/command.png)
+
 
 ## Step 3 
 
 Once you have typed this command you will have 30 seconds to click the button on your Phillips Bridge. If the connection was a succsess you will see a a message in game chat notifiying you that your connection was a sucesses.
 (Note: Each time the client is opened if you'd like to use the plugin you must re connect the bridge)
 
-![Sucess](images/connectionSucess.png)
+
 
 ## Step 4
 
