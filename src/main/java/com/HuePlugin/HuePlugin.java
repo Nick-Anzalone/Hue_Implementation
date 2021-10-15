@@ -105,7 +105,14 @@ public class HuePlugin extends Plugin
 		System.out.println(chatMessage.getType());
 		System.out.println(chatMessage.getMessage());
 		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT){
-			if(chatMessage.getMessage().equals("Easter egg")){
+			if(chatMessage.getMessage().equals("!Testhueconnection")){
+				if(connectionSucessful){
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are connected.","");
+
+				}else{
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are not connected.","");
+
+				}
 
 			}
 		}
