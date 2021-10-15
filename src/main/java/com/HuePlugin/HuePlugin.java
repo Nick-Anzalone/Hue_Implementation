@@ -5,21 +5,17 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 import io.github.zeroone3010.yahueapi.*;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.concurrent.*;
-
-
-
-
-
 import net.runelite.api.events.*;
 
 
@@ -39,18 +35,20 @@ public class HuePlugin extends Plugin
 
 	private String IP;
 
+	private String APIKey;
+
 	private Hue hue;
 
 	private Room room;
 
 	private static final Pattern SPECIAL_DROP_MESSAGE = Pattern.compile("(.+) - (.+)");
 
+	private boolean connectionSucessful;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-
-
-
+		connectToHue();
 	}
 
 	@Override
@@ -59,56 +57,71 @@ public class HuePlugin extends Plugin
 
 	}
 
+	public String getRoomName(){ return this.RoomName;}
+
+	public String getIP(){
+	return this.IP;
+	}
+
+	public Hue getHue(){  return this.hue;}
+
+	public String getAPI(){return this.APIKey;}
+
+	public void setHue(Hue hue){
+		this.hue = hue;
+		return;
+	}
+	public void setRoom(Room room){
+		this.room =room;
+		return;
+	}
+
+	public void setConnectionSucessful(boolean bool){
+		this.connectionSucessful = bool;
+		return;
+	}
+
+	public void connectToHue(){
+		this.APIKey = config.APIConfig();
+		this.RoomName = config.RoomNameConfig();
+		this.IP = config.IPConfig();
+		ConnectThread thread = new ConnectThread(this);
+		thread.start();
+		return;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event){
+		if(event.getKey().equals("ConnectConfig") && event.getNewValue().equals("true") ){
+			connectToHue();
+		}
+		return;
+	}
+
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		System.out.println(chatMessage.getType());
+		System.out.println(chatMessage.getMessage());
 		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT){
-
-			if(chatMessage.getName().equals(client.getLocalPlayer().getName()) && chatMessage.getMessage().equals("!Connecthue")){
-				this.RoomName = config.RoomNameConfig();
-				this.IP = config.IPConfig();
-
-				final String appName = "RuneLite"; // Fill in the name of your application
-				final CompletableFuture<String> apiKey = Hue.hueBridgeConnectionBuilder(this.IP).initializeApiConnection(appName);
-				// Push the button on your Hue Bridge to resolve the apiKey future:
-				String key;
-				try{
-					key = apiKey.get();
-					this.hue = new Hue(this.IP, key);
-					this.room = hue.getRoomByName(this.RoomName).get();
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Connection Sucessful","");
-				}catch (Exception e){
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Connection Unsucessful","");
-
-
-				}
-
-
+			if(chatMessage.getMessage().equals("Easter egg")){
 
 			}
 		}
-
-
-
-
-
-
 		String message = Text.removeTags(chatMessage.getMessage());
-
-
 
 		if(chatMessage.getType() == ChatMessageType.GAMEMESSAGE){
 
 			if(message.contains("You have a funny feeling like") || message.contains("You feel something weird sneaking into your backpack")){
-				this.room.setState(State.builder().color(Color.of(java.awt.Color.CYAN)).on());
+				this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
 				this.room.setBrightness(250);
 
 
 			}else if(message.contains("Valuable drop:")){
 
 				if(triggerDrop(message)){
-					this.room.setState(State.builder().color(Color.of(java.awt.Color.GREEN)).on());
+					this.room.setState(State.builder().color(Color.of(config.dropColorConfig())).on());
 					this.room.setBrightness(250);
 
 				}
@@ -116,21 +129,24 @@ public class HuePlugin extends Plugin
 
 
 			}else if(message.contains("Oh dear, you are dead!")){
-				this.room.setState(State.builder().color(Color.of(java.awt.Color.RED)).on());
+				this.room.setState(State.builder().color(Color.of(config.deathColorConfig())).on());
 				this.room.setBrightness(250);
 
+			}else if(message.contains("Congratulations, you've just advanced")){
+				Fireworks fw = new Fireworks(this.room);
+				fw.start();
 			}
 
 		}else if(chatMessage.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION){
 			Matcher matcher;
 			matcher = SPECIAL_DROP_MESSAGE.matcher(message);
 			if(matcher.find()){
-
-				this.room.setState(State.builder().color(Color.of(java.awt.Color.MAGENTA)).on());
+				this.room.setState(State.builder().color(Color.of(config.raidsDropConfig())).on());
 				this.room.setBrightness(250);
-
-
 			}
+		}else if(chatMessage.getType() == ChatMessageType.TRADE && chatMessage.getMessage().contains("You won!")){
+			this.room.setState(State.builder().color(Color.of(config.dropColorConfig())).on());
+			this.room.setBrightness(250);
 		}
 
 
@@ -141,7 +157,7 @@ public class HuePlugin extends Plugin
 		num = num.replaceAll(" coins","");
 		int check = Integer.parseInt(num);
 
-		if(check > 1000000){
+		if(check > config.valConfig()){
 			return true;
 		}else{
 			return false;
