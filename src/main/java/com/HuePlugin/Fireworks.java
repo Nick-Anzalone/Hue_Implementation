@@ -25,7 +25,7 @@ public class Fireworks extends Thread {
                 java.awt.Color.RED,java.awt.Color.PINK, java.awt.Color.YELLOW
         };
 
-        for (int i = 0; i<10; i++){
+        for (int i = 0; i<7; i++){
             for (int j = 0; j<colArray.length; j++) {
 
 
