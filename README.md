@@ -30,7 +30,11 @@ Once the correct information is entered in the configuration section go ahead an
 
 ![connect](images/connect.png)
 
-## Step 3 
+## Step 3
+
+If youd like to verify if your smart lights have been linked sucessfuly in game type in chat "!Testhueconnection". A message in your in game chat box will tell you if you are connected or not.
+
+## Step 4 
 Go ahead and Enjoy!!!! (Note: In the occurance when you receive a valueable drop, the plugin reacts based on the chat message. Therefore, if your message trigger in the default Runescape is set to a different number and that message does not trigger, the plugin will not trigger either.)
 
 
