@@ -7,7 +7,7 @@ import net.runelite.client.config.ConfigSection;
 
 import java.awt.*;
 
-@ConfigGroup("example")
+@ConfigGroup("Hue")
 public interface HueConfig extends Config
 {
 
