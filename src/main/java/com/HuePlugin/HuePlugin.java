@@ -102,8 +102,6 @@ public class HuePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		System.out.println(chatMessage.getType());
-		System.out.println(chatMessage.getMessage());
 		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT){
 			if(chatMessage.getMessage().equals("!Testhueconnection")){
 				if(connectionSucessful){
@@ -159,19 +157,24 @@ public class HuePlugin extends Plugin
 
 	}
 
-	public boolean triggerDrop(String string){
-		String num = string.substring(string.indexOf("(")+1,string.indexOf(")"));
-		num = num.replaceAll(" coins","");
-		int check = Integer.parseInt(num);
+	public boolean triggerDrop(String string) {
+		String num = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
+		num = num.replaceAll(" coins", "");
+		try {
 
-		if(check > config.valConfig()){
-			return true;
-		}else{
-			return false;
+			int check = Integer.parseInt(num);
+
+			if (check > config.valConfig()) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}catch (Exception e){
+
 		}
-
+		return false;
 	}
-
 	@Provides
 	HueConfig provideConfig(ConfigManager configManager)
 	{
