@@ -38,6 +38,10 @@ public class Fireworks extends Thread {
 
             }
         }
+        
+		this.room.setState(State.builder().color(Color.of(config.defaultColorConfig())).on());
+		this.room.setBrightness(250);
+	}
 
 
 
