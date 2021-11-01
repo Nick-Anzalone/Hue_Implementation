@@ -71,7 +71,7 @@ public interface HueConfig extends Config
 			keyName = "valConfig",
 			name = "Drop Value Threshold",
 			description = "How expensive of a drop do you want the plugin to trigger on?",
-			section  =colorSettings
+			section  = colorSettings
 	)
 	default int valConfig() { return 1000000; }
 
@@ -82,7 +82,7 @@ public interface HueConfig extends Config
 			keyName = "dropColorConfig",
 			name = "Valuable Drop Color",
 			description = "This color represents the color of the light when you receive an expensive drop",
-			section  =colorSettings
+			section  = colorSettings
 	)
 	default Color dropColorConfig() { return Color.GREEN; }
 
@@ -91,7 +91,7 @@ public interface HueConfig extends Config
 			keyName = "deathColorConfig",
 			name = "Death Color",
 			description = "This color represents the color of the light when you die",
-			section  =colorSettings
+			section  = colorSettings
 	)
 	default Color deathColorConfig() {return Color.RED;}
 
@@ -101,7 +101,7 @@ public interface HueConfig extends Config
 			keyName = "raidsDropConfig",
 			name = "Raids Drop Color",
 			description = "This color represents the color of the light when you receive a raids drop",
-			section  =colorSettings
+			section  = colorSettings
 	)
 	default Color raidsDropConfig() {return Color.MAGENTA;}
 
@@ -114,6 +114,25 @@ public interface HueConfig extends Config
 			section  =colorSettings
 	)
 	default Color petDropConfig() {return Color.CYAN;}
+	
+	@ConfigItem(
+			position = 106,
+			keyName = "defaultColorConfig",
+			name = "Default Color",
+			description = "This color represents the color of the light that it will return to after you recieve an event",
+			section  = colorSettings
+	)
+	default Color defaultColorConfig() {return Color.WHITE;}
+	
+	
+	@ConfigItem(
+			position = 107,
+			keyName = "msToTurnBackConfig",
+			name = "Time To Turn Back",
+			description = "After how long should your lights go to the default color again? (1000ms = 1 second)",
+			section  = colorSettings
+	)
+	default int msToTurnBackConfig() { return 10000; }
 
 
 }
