@@ -111,16 +111,9 @@ public class HuePlugin extends Plugin
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT){
-			if(chatMessage.getMessage().equals("!Testhueconnection")){
-				if(connectionSucessful){
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are connected.","");
-				}else{
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are not connected.","");
-				}
-			}
 			if(chatMessage.getMessage().equals("!Testlights")) {
 				if (connectionSucessful) {
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights should turn on now.", "");
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are currently connected.", "");
 					this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
 					this.room.setBrightness(250);
 					setToDefaultColor();
