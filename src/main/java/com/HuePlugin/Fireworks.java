@@ -9,11 +9,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class Fireworks extends Thread {
     Room room;
+    Color defaultColor;
 
 
-
-    public Fireworks(Room room) {
+    public Fireworks(Room room, Color defaultColor) {
         this.room = room;
+        this.defaultColor = defaultColor;
 
     }
 
@@ -38,8 +39,7 @@ public class Fireworks extends Thread {
 
             }
         }
-
-
-
+        this.room.setState(io.github.zeroone3010.yahueapi.State.builder().color(this.defaultColor).on());
+        this.room.setBrightness(250);
     }
 }

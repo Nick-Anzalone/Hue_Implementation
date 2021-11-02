@@ -155,7 +155,7 @@ public class HuePlugin extends Plugin
 				setToDefaultColor();
 
 			}else if(message.contains("Congratulations, you've just advanced")){
-				Fireworks fw = new Fireworks(this.room);
+				Fireworks fw = new Fireworks(this.room, Color.of(config.defaultColorConfig()));
 				fw.start();
 			}
 
