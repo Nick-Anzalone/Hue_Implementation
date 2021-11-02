@@ -177,7 +177,7 @@ public class HuePlugin extends Plugin
 	}
 
 	public boolean triggerDrop(String string) {
-		String num = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
+		String num = string.substring(string.lastIndexOf("(") + 1, string.lastIndexOf(")"));
 		num = num.replaceAll(" coins", "").replaceAll(",", "");
 		try {
 
