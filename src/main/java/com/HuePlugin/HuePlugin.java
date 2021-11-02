@@ -90,6 +90,14 @@ public class HuePlugin extends Plugin
 		return;
 	}
 
+	public void setToDefaultColor(){
+		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+		executorService.schedule(()->{
+			this.room.setState(State.builder().color(Color.of(config.defaultColorConfig())).on());
+			this.room.setBrightness(250);
+		}, config.msToTurnBackConfig(), TimeUnit.MILLISECONDS);
+	}
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event){
 		if(event.getKey().equals("ConnectConfig") && event.getNewValue().equals("true") ){
@@ -106,12 +114,20 @@ public class HuePlugin extends Plugin
 			if(chatMessage.getMessage().equals("!Testhueconnection")){
 				if(connectionSucessful){
 					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are connected.","");
-
 				}else{
 					client.addChatMessage(ChatMessageType.GAMEMESSAGE,"","Your smart lights are not connected.","");
+				}
+			}
+			if(chatMessage.getMessage().equals("!Testlights")) {
+				if (connectionSucessful) {
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights should turn on now.", "");
+					this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
+					this.room.setBrightness(250);
+					setToDefaultColor();
+				} else {
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are not connected.", "");
 
 				}
-
 			}
 		}
 		String message = Text.removeTags(chatMessage.getMessage());
@@ -121,14 +137,14 @@ public class HuePlugin extends Plugin
 			if(message.contains("You have a funny feeling like") || message.contains("You feel something weird sneaking into your backpack")){
 				this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
 				this.room.setBrightness(250);
-
+				setToDefaultColor();
 
 			}else if(message.contains("Valuable drop:")){
 
 				if(triggerDrop(message)){
 					this.room.setState(State.builder().color(Color.of(config.dropColorConfig())).on());
 					this.room.setBrightness(250);
-
+					setToDefaultColor();
 				}
 
 
@@ -136,9 +152,10 @@ public class HuePlugin extends Plugin
 			}else if(message.contains("Oh dear, you are dead!")){
 				this.room.setState(State.builder().color(Color.of(config.deathColorConfig())).on());
 				this.room.setBrightness(250);
+				setToDefaultColor();
 
 			}else if(message.contains("Congratulations, you've just advanced")){
-				Fireworks fw = new Fireworks(this.room);
+				Fireworks fw = new Fireworks(this.room, Color.of(config.defaultColorConfig()));
 				fw.start();
 			}
 
@@ -148,18 +165,20 @@ public class HuePlugin extends Plugin
 			if(matcher.find()){
 				this.room.setState(State.builder().color(Color.of(config.raidsDropConfig())).on());
 				this.room.setBrightness(250);
+				setToDefaultColor();
 			}
 		}else if(chatMessage.getType() == ChatMessageType.TRADE && chatMessage.getMessage().contains("You won!")){
 			this.room.setState(State.builder().color(Color.of(config.dropColorConfig())).on());
 			this.room.setBrightness(250);
+			setToDefaultColor();
 		}
 
 
 	}
 
 	public boolean triggerDrop(String string) {
-		String num = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
-		num = num.replaceAll(" coins", "");
+		String num = string.substring(string.lastIndexOf("(") + 1, string.lastIndexOf(")"));
+		num = num.replaceAll(" coins", "").replaceAll(",", "");
 		try {
 
 			int check = Integer.parseInt(num);
