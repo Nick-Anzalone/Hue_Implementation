@@ -106,23 +106,25 @@ public class HuePlugin extends Plugin
 		return;
 	}
 
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (commandExecuted.getCommand().equals("testlights")){
+			if (connectionSucessful) {
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are currently connected.", "");
+				this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
+				this.room.setBrightness(250);
+				setToDefaultColor();
+			} else {
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are not connected.", "");
+
+			}
+		}
+	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT){
-			if(chatMessage.getMessage().equals("!Testlights")) {
-				if (connectionSucessful) {
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are currently connected.", "");
-					this.room.setState(State.builder().color(Color.of(config.petDropConfig())).on());
-					this.room.setBrightness(250);
-					setToDefaultColor();
-				} else {
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Your smart lights are not connected.", "");
-
-				}
-			}
-		}
 		String message = Text.removeTags(chatMessage.getMessage());
 
 		if(chatMessage.getType() == ChatMessageType.GAMEMESSAGE){
